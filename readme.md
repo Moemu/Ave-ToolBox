@@ -11,6 +11,14 @@
 
 # 功能与原理
 
+## 密码设定
+
+在%Appdata%目录下新建Ave-ToolBox文件夹。
+
+在其下新建Password.txt用于记录密码。
+
+密码将用MD5加密
+
 ## 锁定壁纸
 
 修改注册表:
@@ -37,7 +45,35 @@ Netsh advfirewall firewall set rule name="WebBrowserLock1" new enable=no
 
 考虑到作者的实际情况，目前仅添加了默认路径下的Microsoft Edge，如果还想添加更多浏览器的支持，还请各位提交PR
 
+# 命令提示符模式
+
+语法如下:
+
+```
+Ave-ToolBox.exe -t <Toolname> --Status <Enable/DisEnable> [[--Password] <Password>]
+```
+
+​    -t 指定工具
+
+​    --Status 工具状态
+
+​    --Password 密码
+
+使用例:
+
+```
+Ave-ToolBox.exe -t Toollist
+Ave-ToolBox.exe -t WallpaperLock --Status Enable --Password 000
+Ave-ToolBox.exe -t WebbrowserLock --Status DisEnable
+```
+
+目前的可用工具如下:
+
+```
+'WallPaperLock',
+'WebBrowserLock'
+```
+
 # Feature:
 
-- [ ] 1. 禁止安装软件
-- [ ] 2. 启动密码验证
+No any idea.
