@@ -45,6 +45,19 @@ Netsh advfirewall firewall set rule name="WebBrowserLock1" new enable=no
 
 考虑到作者的实际情况，目前仅添加了默认路径下的Microsoft Edge，如果还想添加更多浏览器的支持，还请各位提交PR
 
+## 禁用系统工具
+
+包括注册表，任务管理器，组策略，cmd
+
+在注册表上添加以下键值:
+
+```
+HKEY_CURRENT_USER\software\microsoft\windows\currentVersion\policies\system,DisableTaskmgr,REG_DWORD,1
+HKEY_CURRENT_USER\software\microsoft\windows\currentVersion\policies\system,DisableRegistryTools,REG_DWORD,1
+HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\Windows\System,DisableCMD,REG_DWORD,1
+HKEY_CURRENT_USER\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\POLICIES\EXPLORER,RESTRICTRUN,REG_DWORD,1
+```
+
 # 命令提示符模式
 
 语法如下:
@@ -71,7 +84,8 @@ Ave-ToolBox.exe -t WebbrowserLock --Status DisEnable
 
 ```
 'WallPaperLock',
-'WebBrowserLock'
+'WebBrowserLock',
+'SystemToolLock'
 ```
 
 # Feature:

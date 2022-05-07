@@ -20,3 +20,12 @@ def WebBrowserLock(Status:int):
         subprocess.getstatusoutput('netsh advfirewall firewall add rule name="WebBrowserLock1" dir=out program="C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" action=block')
     else:
         subprocess.getstatusoutput('Netsh advfirewall firewall set rule name="WebBrowserLock1" new enable=no')
+
+def SystemToolLock(Status:int):
+    '''
+    系统工具锁
+    '''
+    WriteValue(win32con.HKEY_CURRENT_USER,'software\microsoft\windows\currentVersion\policies\system','DisableTaskmgr',win32con.REG_DWORD,Status)
+    WriteValue(win32con.HKEY_CURRENT_USER,'software\microsoft\windows\currentVersion\policies\system','DisableRegistryTools',win32con.REG_DWORD,Status)
+    WriteValue(win32con.HKEY_CURRENT_USER,'SOFTWARE\Policies\Microsoft\Windows\System','DisableCMD',win32con.REG_DWORD,Status)
+    WriteValue(win32con.HKEY_CURRENT_USER,'SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\POLICIES\EXPLORER','RESTRICTRUN',win32con.REG_DWORD,Status)

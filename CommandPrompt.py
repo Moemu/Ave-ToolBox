@@ -20,7 +20,7 @@ def Management(Toolname:str,Status=None) -> None:
         Ave-Tool.exe -t WallPaperLock --Status Enable --Password 123
         ''')
     elif Toolname == 'Toollist':
-        print(['WallPaperLock','WebBrowserLock'])
+        print(['WallPaperLock','WebBrowserLock','SystemToolLock'])
     elif Toolname == '锁定壁纸开' or (Toolname == 'WallPaperLock' and Status == 'Enable'):
         ToolBox.WallPaperLock(1)
     elif Toolname == '锁定壁纸关' or (Toolname == 'WallPaperLock' and Status == 'DisEnable'):
@@ -29,6 +29,10 @@ def Management(Toolname:str,Status=None) -> None:
         ToolBox.WebBrowserLock(1)
     elif Toolname == '禁用浏览器上网关' or (Toolname == 'WebBrowserLock' and Status == 'DisEnable'):
         ToolBox.WebBrowserLock(0)
+    elif Toolname == '禁用系统工具开' or (Toolname == 'SystemToolLock' and Status == 'Enable'):
+        ToolBox.SystemToolLock(1)
+    elif Toolname == '禁用系统工具关' or (Toolname == 'SystemToolLock' and Status == 'DisEnable'):
+        ToolBox.SystemToolLock(0)
     else:
         if not Status in ['Enable','DisEnable',None]:
             print('Status参数有误')

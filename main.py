@@ -1,7 +1,7 @@
 '''
 Audio Visual Education Committee tools(电教委员管理工具)
 Made by Moemu
-Ver: 1.0
+Ver: 1.2
 Feture: 壁纸锁定, 禁止上网
 '''
 from CommandPrompt import *
@@ -37,12 +37,13 @@ def main():
                 event, value = window.Read()
     layout = [
         [sg.Menu([['密码',['添加\更改密码']]])],
-        [sg.Text('电教管理工具(Ver 1.1 By Moemu)',font=('微软雅黑 15'))],
+        [sg.Text('电教管理工具(Ver 1.2 By Moemu)',font=('微软雅黑 15'))],
         [sg.Text('注意: 请以管理员模式打开程序, 不然程序无法使用',text_color='red')],
         [sg.Text('锁定壁纸'),sg.Push(),sg.Button('开启',key='锁定壁纸开'),sg.Button('关闭',key='锁定壁纸关')],
-        [sg.Text('禁用浏览器上网'),sg.Push(),sg.Button('开启',key='禁用浏览器上网开'),sg.Button('关闭',key='禁用浏览器上网关')]
+        [sg.Text('禁用浏览器上网'),sg.Push(),sg.Button('开启',key='禁用浏览器上网开'),sg.Button('关闭',key='禁用浏览器上网关')],
+        [sg.Text('禁用系统工具'),sg.Push(),sg.Button('开启',key='禁用系统工具开'),sg.Button('关闭',key='禁用系统工具关')],
     ]
-    Window = sg.Window('电教管理工具(Ver 1.0 By Moemu)',layout,font=('微软雅黑 10'),size=(500,500))
+    Window = sg.Window('电教管理工具(Ver 1.2 By Moemu)',layout,font=('微软雅黑 10'),size=(500,500))
     while True:
         event,value = Window.Read()
         if event == sg.WIN_CLOSED:
