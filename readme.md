@@ -1,6 +1,6 @@
 # Ave-ToolBox（电教管理工具）
 
-电教管理工具，让别的学生不能占用你使用一体机的宝贵机会，同时还能赢得班主任的赞誉。
+电教管理工具，防止小人乱用电脑，同时还能赢得班主任的赞誉。
 
 # 注意事项
 
@@ -58,6 +58,70 @@ HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\Windows\System,DisableCMD,REG_DWOR
 HKEY_CURRENT_USER\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\POLICIES\EXPLORER,RESTRICTRUN,REG_DWORD,1
 ```
 
+## 后台监控
+
+通过BackStage.exe实现后台监控，可以监控开机时间和运行程序。
+
+它会在`C:\Users\@Username@\Appdata\Roaming\Ave-Toolbox`下的log.txt记录电脑使用日志，例如:
+
+> 2022-05-28 20:21:27 [系统启动] 程序开始运行
+> 2022-05-28 20:21:28 [程序启动] 检测到 浏览器 Microsoft Edge 启动, 此程序用于访问网页
+> 2022-05-28 20:21:52 [程序启动] 检测到 代理工具 Clash 启动, 此程序用于访问境外网站
+> 2022-05-28 20:22:06 [程序启动] 检测到 游戏平台 Steam 启动, 此程序可用于购买或游玩游戏
+> 2022-05-28 20:22:25 [程序结束] 检测到 代理工具 Clash 结束运行,共运行 1 分钟
+
+首先您需要通过Ave-ToolBox将此程序设置为开机自启动(后台->设为自启)。
+
+若要监控运行程序，请至`C:\Users\@Username@\Appdata\Roaming\Ave-Toolbox`下创建`MonitorProgram.json`
+
+按照如下格式配置:
+
+```json
+{
+    "0":{
+        "Name":"程序名",
+        "Tag":"标签",
+        "ProcessName":"进程名",
+        "Describe":"程序描述"
+    },
+    "1":{
+        "Name":"程序名",
+        "Tag":"标签",
+        "ProcessName":"进程名",
+        "Describe":"程序描述"
+    }
+}
+```
+
+例如:
+
+```json
+{
+    "0":{
+        "Name":"Steam",
+        "Tag":"游戏平台",
+        "ProcessName":"steam.exe",
+        "Describe":"此程序可用于购买或游玩游戏"
+    },
+    "1":{
+        "Name":"Clash",
+        "Tag":"代理工具",
+        "ProcessName":"Clash for Windows.exe",
+        "Describe":"此程序用于访问境外网页"
+    },
+    "2":{
+        "Name":"Microsoft Edge",
+        "Tag":"浏览器",
+        "ProcessName":"msedge.exe",
+        "Describe":"此程序用于访问网页"
+    }
+}
+```
+
+注意： 我们推荐关闭浏览器的预启动功能，不然监控到浏览器关闭的时间会比如期时间长上很多。
+
+
+
 # 命令提示符模式
 
 语法如下:
@@ -68,7 +132,7 @@ Ave-ToolBox.exe -t <Toolname> --Status <Enable/DisEnable> [[--Password] <Passwor
 
 ​    -t 指定工具
 
-​    --Status 工具状态
+​    --Status 工具状态(或路径)
 
 ​    --Password 密码
 
@@ -85,9 +149,11 @@ Ave-ToolBox.exe -t WebbrowserLock --Status DisEnable
 ```
 'WallPaperLock',
 'WebBrowserLock',
-'SystemToolLock'
+'SystemToolLock',
+'Install'(将后台程序设为开机自启动),
+'Load-Config-File'
 ```
 
 # Feature:
 
-No any idea.
+1. 设置云同步

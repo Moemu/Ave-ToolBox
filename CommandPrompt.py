@@ -14,13 +14,19 @@ def Management(Toolname:str,Status=None) -> None:
         print('''
         用法: Ave-Tool.exe -t <Toolname> --Status <Enable/DisEnable> [[--Password] <Password>]
         -t 指定工具
-        --Status 工具状态
+        --Status 工具状态(或指定路径)
         --Password 密码
         用法例:
         Ave-Tool.exe -t WallPaperLock --Status Enable --Password 123
         ''')
     elif Toolname == 'Toollist':
-        print(['WallPaperLock','WebBrowserLock','SystemToolLock'])
+        print(['WallPaperLock','WebBrowserLock','SystemToolLock','Install','Load-Config-File'])
+    elif Toolname == '创建配置文件':
+        ToolBox.Creat_Config_File()
+    elif Toolname == '导入配置文件' or Toolname == 'Load-Config-File':
+        ToolBox.Load_Config_File(Status)
+    elif Toolname == '设为开机自启' or Toolname == 'Install':
+        ToolBox.Install_AveService()
     elif Toolname == '锁定壁纸开' or (Toolname == 'WallPaperLock' and Status == 'Enable'):
         ToolBox.WallPaperLock(1)
     elif Toolname == '锁定壁纸关' or (Toolname == 'WallPaperLock' and Status == 'DisEnable'):

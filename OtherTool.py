@@ -4,6 +4,38 @@
 import os,hashlib,win32api,win32con
 import PySimpleGUI as sg
 
+def CreatKey(Rootdirectory=None,Path:str=None,Keyname:str=None):
+    '''
+    在注册表中新建项
+    Rootdirectory: 注册表第一层目录
+    Path: 注册表下层路径
+    Keyname: 项名
+    '''
+    key = win32api.RegOpenKey(Rootdirectory,Path,0, win32con.KEY_ALL_ACCESS)
+    win32api.RegCreateKey(key,Keyname)
+    return None
+
+def WriteValue(Rootdirectory=None,Path:str=None,Keyname:str=None,Keytype=None,Keyvalue:str=None):
+    '''
+    在注册表中写值
+    Rootdirectory: 注册表第一层目录
+    Path: 注册表下层路径
+    Keyname: 值名
+    Keytype: 值类型
+    Keyvalue: 值
+    '''
+    key = win32api.RegOpenKey(Rootdirectory,Path,0, win32con.KEY_ALL_ACCESS)
+    win32api.RegSetValueEx(key,Keyname,0,Keytype,Keyvalue)
+    return None
+
+def SetWallpaper(Path):
+    '''
+    设置壁纸
+    '''
+    CreatKey(win32con.HKEY_CURRENT_USER,'Software\Microsoft\Windows\CurrentVersion\Policies','System')
+    WriteValue(win32con.HKEY_CURRENT_USER,'Software\Microsoft\Windows\CurrentVersion\Policies\System','Wallpaper',win32con.REG_SZ,Path)
+    return None
+
 def CheckPassword(Password:str) -> bool:
     '''
     密码检测
@@ -31,7 +63,7 @@ def AddPassword(Password:str) -> None:
 
 def PasswordChange() -> None:
     '''
-    密码更改GUI
+    密码更改
     '''
     layout = [
         [sg.Text('输入新的密码:')],
@@ -50,28 +82,4 @@ def PasswordChange() -> None:
     AddPassword(value[0])
     sg.Popup('添加成功...',font=('微软雅黑 10'))
     Window.Close()
-    return None
-
-def CreatKey(Rootdirectory=None,Path=None,Keyname=None):
-    '''
-    在注册表中新建项
-    Rootdirectory: 注册表第一层目录
-    Path: 注册表下层路径
-    Keyname: 项名
-    '''
-    key = win32api.RegOpenKey(Rootdirectory,Path,0, win32con.KEY_ALL_ACCESS)
-    win32api.RegCreateKey(key,Keyname)
-    return None
-
-def WriteValue(Rootdirectory=None,Path=None,Keyname=None,Keytype=None,Keyvalue=None):
-    '''
-    在注册表中写值
-    Rootdirectory: 注册表第一层目录
-    Path: 注册表下层路径
-    Keyname: 值名
-    Keytype: 值类型
-    Keyvalue: 值
-    '''
-    key = win32api.RegOpenKey(Rootdirectory,Path,0, win32con.KEY_ALL_ACCESS)
-    win32api.RegSetValueEx(key,Keyname,0,Keytype,Keyvalue)
     return None
