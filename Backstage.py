@@ -1,5 +1,5 @@
-import psutil,os,json,time
-from datetime import datetime
+import psutil,os,json,time,subprocess,threading
+from datetime import datetime,timedelta
 
 class Log:
     def Write_Log(Tag:str,Message:str):
@@ -9,7 +9,31 @@ class Log:
         print(log)
         return None
     def Start():
+        #获取关机时间
+        if os.path.isfile(os.getenv('APPDATA')+'\Ave-ToolBox\BootTime.txt') and os.path.isfile(os.getenv('APPDATA')+'\Ave-ToolBox\log.txt'):
+            with open(os.getenv('APPDATA')+'\Ave-ToolBox\BootTime.txt','r') as f:
+                BootTime = f.read()
+            with open(os.getenv('APPDATA')+'\Ave-ToolBox\log.txt','r') as f:
+                Logline = f.readlines()
+                Logline.reverse()
+            for l in Logline:
+                if '[系统启动] 程序开始运行\n' == l[20:]:
+                    print('yes')
+                    StartTime = l[:19]
+                    StartTime = datetime.strptime(StartTime,'%Y-%m-%d %H:%M:%S')
+                    ShutdownTime = StartTime + timedelta(minutes=float(BootTime))
+                    with open(os.getenv('APPDATA')+'\Ave-ToolBox\log.txt','a') as f:
+                        f.write(datetime.strftime(ShutdownTime,'%Y-%m-%d %H:%M:%S') + ' [系统关闭] 程序退出,本次系统运行时间: '+BootTime+' 分钟\n')
+                break
         Log.Write_Log('系统启动','程序开始运行')
+    def FreshStartTime():
+        BootTime = datetime.fromtimestamp(psutil.boot_time())
+        while True:
+            NowTime = datetime.now()
+            BootTimes = NowTime - BootTime
+            with open(os.getenv('APPDATA')+'\Ave-ToolBox\BootTime.txt','w') as f:
+                f.write(str(round(BootTimes.total_seconds()/60,2)))
+            time.sleep(5)
     def Check_Process():
         # 加载监控列表
         with open(os.getenv('APPDATA')+'\Ave-ToolBox\MonitorProgram.json','r',encoding='utf-8') as f:
@@ -65,9 +89,27 @@ class Log:
                     RunningProcessDes.remove(RunningProcessDes[num])
                     RunningProcess.remove(RunningProcess[num])
                     StartRunTime.remove(StartRunTime[num])
-            time.sleep(1)
+            time.sleep(3)
+    def Usb_Check():
+        old_disk=psutil.disk_partitions()
+        while True:
+            now_disk=psutil.disk_partitions()
+            if len(now_disk)>len(old_disk):
+                for i in old_disk:
+                    now_disk.remove(i)
+                old_disk=psutil.disk_partitions()
+                ml='dir '+str(now_disk[0][0])
+                num,returnvalue = subprocess.getstatusoutput(ml)
+                name=returnvalue.split('是 ')[1].split('\n')[0]
+                Log.Write_Log('U盘插入','检测到U盘插入,驱动器卷名为 '+name)
+            elif len(now_disk)<len(old_disk):
+                old_disk=psutil.disk_partitions()
+                Log.Write_Log('U盘拔出','检测到U盘拔出')
+            time.sleep(5)
 
 if __name__ == '__main__':
     Log.Start()
-    if os.path.isfile(os.getenv('APPDATA')+'\Ave-ToolBox\MonitorProgram.json'):
-        Log.Check_Process()
+    t1 = threading.Thread(target=Log.Check_Process)
+    t2 = threading.Thread(target=Log.Usb_Check)
+    t1.start()
+    t2.start()

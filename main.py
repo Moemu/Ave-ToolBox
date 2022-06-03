@@ -1,7 +1,7 @@
 '''
 Audio Visual Education Committee tools(电教委员管理工具)
 Made by Moemu
-Ver: 1.2
+Ver: 2.0
 Feture: 壁纸锁定, 禁止上网
 '''
 from CommandPrompt import *

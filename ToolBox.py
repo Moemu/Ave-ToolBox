@@ -66,6 +66,8 @@ def Install_AveService():
     '''
     初次启动时写入启动信息
     '''
+    if not os.path.isdir(os.getenv('APPDATA')+'\Ave-ToolBox'):
+        os.mkdir(os.getenv('APPDATA')+'\Ave-ToolBox')
     shutil.copyfile('BackStage.exe',os.getenv('APPDATA')+'\Ave-ToolBox\BackStage.exe')
     WriteValue(win32con.HKEY_LOCAL_MACHINE,'SOFTWARE\Microsoft\Windows\CurrentVersion\Run','BackStageOfAve',win32con.REG_SZ,os.getenv('APPDATA')+'\Ave-ToolBox\BackStage.exe')
     return None
