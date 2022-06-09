@@ -8,6 +8,7 @@
 2. 本程序完全开源，如果你们班的电教通过该程序限制了某些功能，那么你也可以改回来
 3. EXE运行环境为**Windows 10 64位以上**，如果你们用的是Windows 7及以下，那么你可以装Windows 10或者劝电教装。
 4. 你需要以管理员权限运行该程序
+5. 自Ver 2.2开始，某些后台工具源码迁移至Other Tool文件夹，您可能在release中找不到该工具，此时您需要手动编译。
 
 # 功能与原理
 
@@ -120,13 +121,26 @@ HKEY_CURRENT_USER\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\POLICIES\EXPLORER,RE
 
 注意： 我们推荐关闭浏览器的预启动功能，不然监控到浏览器关闭的时间会比如期时间长上很多。
 
+## 自动启动步骤记录器
 
+通过AutoPsr.exe实现，在后台记录系统操作，为使用此功能，您需要在Ave-Toolbox文件夹中配置好Config_AutoPsr.json文件，文件格式如下:
+
+```json
+{
+	"StartTime":"11:30",
+	"EndTime":"11:31"
+}
+```
+
+按照此格式配置好自动启动时间和结束时间（注意:此过程中若系统关机，记录文件无法保存）
+
+记录文件保存在Ave-Toolbox文件夹下的PsrLog文件夹下
 
 # 命令提示符模式
 
 语法如下:
 
-```
+```powershell
 Ave-ToolBox.exe -t <Toolname> --Status <Enable/DisEnable> [[--Password] <Password>]
 ```
 
